@@ -1,0 +1,18 @@
+@startuml
+a.com -> sso服务器:1.获取session
+sso服务器 -> a.com:2.没有已知session,弹出SSO的登录页面,\n用户输入账密,sso服务器进行登录,\n成功后生成一个ticket与用户登录信息\n生成session,加密生成Token回调a.com,\n并携带a.com业务独有的key和a.com的URL\n回调的URL里带上Token参数
+
+
+
+
+a.com ---> a.com其他页面:3.拿到Token参数,解析后获得ticket,初始化\n本地session并把ticket也记录下来
+
+
+a.com其他页面->a.com:
+a.com其他页面--->sso服务器:4.到a.com上获取session并到sso.com上\n校验ticket值得有效性，两个操作都成功之\n后才返回用户信息；若校验ticket值失败，\n则重新要求用户进行登录操作，即从步骤\n1开始
+
+b.com ->sso服务器:5获取session
+sso服务器 -> b.com :6.有已知session,加密生成Token回调b.com,\n
+
+
+@enduml
